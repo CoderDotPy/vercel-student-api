@@ -4,6 +4,7 @@ import json
 
 app = FastAPI()
 
+# Enable CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -11,12 +12,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Load student data
 with open("data.json") as f:
     student_data = json.load(f)
-    print(f"Loaded {len(student_data)} students")
 
 @app.get("/api")
-def get_marks(name: list[str] = []):
+def get_marks(request: Request):  # ← FIXED: request parameter added
     names = request.query_params.getlist("name")
     print("Query names:", names)
     name_to_marks = {student["name"]: student["marks"] for student in student_data}
