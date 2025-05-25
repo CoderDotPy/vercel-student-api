@@ -15,7 +15,7 @@ with open("data.json") as f:
     student_data = json.load(f)
 
 @app.get("/api")
-def get_marks(name: list[str] = Query([])):
+def get_marks(name: list[str] = []):
     name_to_marks = {student["name"]: student["marks"] for student in student_data}
     result = [name_to_marks.get(n, None) for n in name]
     return {"marks": result}
