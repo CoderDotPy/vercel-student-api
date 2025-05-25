@@ -17,8 +17,9 @@ with open("data.json") as f:
 
 @app.get("/api")
 def get_marks(name: list[str] = []):
-    print("Query names:", name)
+    names = request.query_params.getlist("name")
+    print("Query names:", names)
     name_to_marks = {student["name"]: student["marks"] for student in student_data}
-    result = [name_to_marks.get(n) for n in name]
+    result = [name_to_marks.get(n) for n in names]
     print("Result:", result)
     return {"marks": result}
