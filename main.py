@@ -12,7 +12,8 @@ app.add_middleware(
 )
 
 with open("data.json") as f:
-    student_data = json.load(f)
+    data = json.load(f)
+    student_data = data["students"]
 
 @app.get("/api")
 def get_marks(name: list[str] = []):
