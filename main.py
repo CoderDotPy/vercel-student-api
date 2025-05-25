@@ -1,10 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 import json
 
 app = FastAPI()
 
-# Enable CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -12,12 +11,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load data once at startup
-with open("data.json", "r") as f:
+with open("data.json") as f:
     student_data = json.load(f)
 
 @app.get("/api")
 def get_marks(name: list[str] = []):
+    print("Query names:", name)
     name_to_marks = {student["name"]: student["marks"] for student in student_data}
-    result = [name_to_marks.get(n, None) for n in name]
+    result = [name_to_marks.get(n) for n in name]
+    print("Result:", result)
     return {"marks": result}
